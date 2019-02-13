@@ -1,0 +1,136 @@
+Version 0.99.0
+--------------
+o First release version
+o Fix bugs.
+
+Version 0.99.01
+--------------
+o Change some compounds whose formulas contain "X" or "R" in KEGG database (20170811).
+
+Version 0.99.02
+--------------
+o Change analysisReport function.
+o Change the output files.
+o Add use.default.md parameter in metABM function.
+o Fix some bugs.
+
+Version 0.99.04
+--------------
+o Fix bugs in metModule and metModule2 when there are no mosules with p values less than 0.05.
+o Fix bugs in analysisReport when there are no mosules with p values less than 0.05.
+
+Version 0.99.05
+--------------
+o New feature: Only use MRN based annotations for dysregulated network analysis.
+o New feature: Use annotations of dysregulated peaks for pathway enrichment.
+o Combine some functions as one R file.
+o Fix bugs in findPathway and findPathway2.
+o Fix bugs in tools.
+
+Version 0.99.06
+--------------
+o Fix some bugs in singleTransformation.
+o Fix a bugs in analysisReport.
+o Fix bugs in some functions which select some columns from a data frame or matrix.
+o Fix bugs in heat map when module or pathway sample have less than two variables.
+
+Version 0.99.07
+--------------
+o Fix bug in metAnnotation: One peak should not be used to annotate itself.
+o Fix bugs in ppm calculation: if m/z less than 400 Da, the difference of m/z should be divided by 400.
+o New feature: Output MS/MS matching spectra between seed and neighbor.
+o New feature: In MetDNA: If ms2.match.annotation.result.csv exist, set ms2.annotation as FALSE. If MRN.annotation.result.csv exist, set mrn.annotation as FALSE.
+
+Version 0.99.10
+--------------
+o Fix bug in ms2Annotation: Change the default molecular descriptors for RT prediction in RP model.
+o Close the dysregulated pathway analysis in metPathway.
+o Rearrange the output results of dysregulated network analysis.
+o Combine metModule and metModule2 function. So positive, negative or both can be completed in one function.
+o Fix the bugs when p value is NA and fold change is NA or infinite.
+o Fix a bug in groupRT function.
+o Fix a bug in metModule function.
+
+Version 0.99.11
+--------------
+o New feature: Use the annotations of dysregulated for pathway enrichment analysis. The users can also provide the markers which you select by your methods. The markers file should be named as "marker.csv" and placed in "POS" or "NEG" folder. The marker only contain two columns, first column is "peak.name" and second column is "KEGG.ID", and if one peak matches multiple annotations, the KEGG IDs should be seperated using semicolon ";".
+o Dysregulated network is set FALSE by default.
+o Pathway enrichment analysis is set TRUE by default if polarity is "both", and FALSE if polarity is "positive" or "negative".
+o New feature: You can give remain.idx in the directory.
+o Fix a fetal bug in readAnnotation.
+o Fix a bug when msp data is from MetAnalyzer (20171029).
+o Fix a bug in pathway quantitative analysis (20171107).
+o New feature: metabolite quantitative, use all identification result; pathway quantitative, use the dysregulated metabolite.
+
+Version 0.99.12
+--------------
+o New feature: User can use MetDNA function to process positive and negative in one run.
+o New feature: The run log is outputed as txt.
+o Fix a bug in uniTest.
+o Fix a bug in isotopeAnnotation when peak intensity is 0.
+o New feature: Add two new arguments. 1. ms2.match.plot, default is TRUE, output MS/MS spectral match plot or not in MS2 match identification. 2. seed.neighbor.match.plot, default is FALSE, output MS/MS spectral match plot between seed and neighbor or not.
+o Fix a bug when the sample name starts with a number.
+o Fix a bug when the users change the data.csv to do pathway enrichment analysis.
+o Fix a bug in analysisReport.
+o New feature: The parameters can be direct from MetDNA.paramters.csv using the new argument: parameter (20171220).
+
+Version 0.99.13
+--------------
+o A new argument, instrument is added. It can be set as AgilentQTOF, SciexTripleTOF, other QTOF and ThermoOrbitrap.
+
+Version 0.99.14
+--------------
+o Fix a bug when there are only one sample in one group.
+
+Version 0.99.15
+--------------
+o Fix a bug in analysisGeneration.
+
+Version 0.99.16
+--------------
+o Add P-values to Quantitative.pathway.metabolite.result.csv.
+o Re-orginize the analysis results.
+o Remove the MS2_match_results.
+
+Version 1.0.0
+--------------
+o The First open release version.
+
+Version 1.0.1
+--------------
+o Fix a bugs: When number of dysregulated peaks is less than 10, give a warning.
+
+Version 1.0.2
+--------------
+o Revision for comments of reviewers from Nature methods.
+o Pathway overview, change FDR to p value.
+o A new paramter, candidate.num is added to control how many candidate for peaks are outputted. Default is 3.
+o Fix a small bug in readAnnotation function.
+o The weights have been optimized and changed for metabolite and adduct annotation.
+o Change the score cutoff as 0.4 for identifications and identifications.
+o Fix a small bug in metdnaFor2Mode.
+o Fix a small bug in analysisGeneration.
+o The name of package is temporarily changed to MetDNA102.
+o The "Glycolysis / Gluconeogenesis" pathway in fruit fly is removed a metablites.
+
+Version 1.0.3
+--------------
+o Release version.
+o Add README file.
+o The default candidate number of peaks are used for anywhere, such as pathway enrichment, data output and report.
+
+Version 1.1
+--------------
+o Release version.
+o Add README file.
+o Fixed a small bug.
+o Add a sample.name check in dataCheck function.
+
+Version 1.1.1
+--------------
+o Fixed a small bug, when all the intentsity are same in all samples.
+
+Version 1.1.2
+--------------
+o Fixed a small bug, when there is no marker with ID for pathway enrichment.
+

@@ -1,0 +1,107 @@
+---
+output:
+  html_document: default
+  pdf_document: default
+  word_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+<center>![](logo.png)</center>
+
+<h2>**Analysis of report**</h2>
+<h3>Xiaotao Shen, Zhengjiang Zhu</h3>
+<h3>`r format(Sys.Date())`</h3>
+
+---
+
+### **(1) INTRODUCTION**
+
+#### MetDNA is used for metabolite annotation and dysregulated network analysis of untargeted metabolomics.
+
+---
+
+### **(2) PARAMETERS**
+
+#### **Table 1: The parameter setting of this analysis**
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE, message=FALSE}
+library(knitr)
+load("parameter")
+colnames(parameter) <- c("Patameter", "Value", "Meaning")
+kable(parameter, format = "markdown")
+```
+
+---
+
+### **(3) SAMPLE INFORMATION**
+
+![**Figure 1: Peak distribution**](peak.distribution.plot.jpg)
+
+---
+
+### **(4) METABOLITE ANNOTATION**
+
+#### The metabolite annotation is based on metabolic reaction network. 
+
+![**Figure 2: Recursive annotation and redundancy removal**](annotation.information.and.redundancy.removal.in.metABM.jpg)
+
+#### Confidence level (from grade 1 to grad 4) is assigned to each metabolie.
+
+![**Figure 3: The confidence levles of metabolites**](annotation.grade.jpg) 
+
+
+
+---
+
+### **(5) Dysregulated network analysis**
+
+#### Dysregulated peaks (according to pvalues) are used to identify dysregulated modules. The dysregulated modules with p values less than 0.05 are combined as dysregulated network. Metabolite set analysis (MSEA) is used to annotate functions of each module. The MSEA result for each module can be found in */Dysregulated_network_analysis_result_POS/module_information/Module_MSE analysis*.
+
+![**Figure 4: Summary of module information**](module.overview.jpg) 
+
+#### **Table 2: The information of dysregualted modules.** The detailed information can be got from *module.result.csv* in */Dysregulated_network_analysis_result_POS/module_information*
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE, message=FALSE}
+library(knitr)
+load("module.result")
+temp.idx <- which(module.result$p.value < 0.05)
+if(length(temp.idx) == 0 & nrow(module.result) > 5){
+  temp.idx <- 1:5
+}else{
+  temp.idx <- temp.idx
+}
+
+overlap <- as.numeric(module.result$`Detected metabolite number`)*100/as.numeric(module.result$`Module size`)
+module.result$`Detected metabolite number` <- overlap
+colnames(module.result)[5] <- "Overlap (%)"
+kable(module.result[temp.idx,c(1,2,3,4,5,13)])
+```
+
+
+![**Figure 5: Summary of dysregulated network information**](pathway.overview.jpg)                                              
+
+#### **Table 3: The information of dysregualted networks.** The detailed information can be got from *dysregulated.network.MSEA.csv* in */Dysregulated_network_analysis_result_POS/pathway_information*.                 
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE, message=FALSE}
+library(knitr)
+load("dn.result")
+temp.idx <- which(dn.result$q.value < 0.05)
+if(length(temp.idx) == 0 & nrow(module.result) > 5){
+  temp.idx <- 1:5
+}else{
+  temp.idx <- temp.idx
+}
+
+name <- rownames(dn.result)
+name <- unlist(lapply(strsplit(name, split = ";"), function(x){x[1]}))
+dn.result$Overlap <- dn.result$Overlap*100/dn.result$Pathway.length
+dn.result <- data.frame(name, dn.result, stringsAsFactors = FALSE)
+rownames(dn.result) <- NULL
+colnames(dn.result) <- c("Pathway name", "p value", "p value(adjusted)", "FDR", "Pathway size", "Overlap (%)")
+kable(dn.result[temp.idx, -4])
+```
+
+

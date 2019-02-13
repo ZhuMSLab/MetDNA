@@ -1,0 +1,25 @@
+Package: MetDNA
+Type: Package
+Title: MetDNA
+Version: 1.1.2
+Date: 2019-01-08
+Author: Xiaotao Shen, Zhengjiang Zhu
+Maintainer: Xiaotao Shen<shenxt@sioc.ac.cn>
+Description: Metabolite identification and Dysregulated Network Analysis.
+LazyData: true
+Depends: R (>= 3.0)
+Imports: beeswarm, BiocParallel, CHNOSZ, ggplot2, graph, graphics, 
+         grDevices, gridExtra, igraph, impute, maptools,
+         MASS, methods, missForest, parallel, pbapply, princurve, pryr,
+         randomForest, Rdisop, readr, readxl, rmarkdown, R.oo, snow, stats, stringr,
+         tibble, utils, zip
+License: GPL-2 | file LICENSE
+RoxygenNote: 6.0.1
+Suggests: knitr,
+    rmarkdown,
+    BiocStyle,
+    RUnit,
+    BiocGenerics
+VignetteBuilder: knitr
+Note: No
+biocViews: Metabolomics, Bioinformation
