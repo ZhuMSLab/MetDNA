@@ -1,37 +1,7 @@
-## Welcome to GitHub Pages
+## Overview of MetDNA
 
-You can use the [editor on GitHub](https://github.com/ZhuMSLab/MetDNA/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
+> Created in 2018 by Xiaotao Shen, Xin Xiong and Ruohong Wang from Dr. Zheng-Jiang Zhu lab, Chinese Academy of Sciences.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+Metabolite identification is the long-standing challenge for liquid chromatography-mass spectrometry (LC-MS)-based untargeted metabolomics. Here, we developed MetDNA (Metabolite identification and Dysregulated Network Analysis) for the large-scale and ambiguous identification of metabolites from LC-MS/MS data sets. Users can simply import MS1 peak table, MS/MS data and sample information to perform metabolite identification and dysregulated metabolic pathway analysis. MetDNA implements a metabolic reaction network (MRN) based recursive algorithm for metabolite identification, which supports data from different LC systems (e.g., HILIC and reverse phase) and MS platforms (e.g., Agilent QTOF, Sciex TripleTOF, Thermo Orbitrap, and others).
 
-### Markdown
-
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
-
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/ZhuMSLab/MetDNA/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+Please click Analysis tab in MetDNA [web server](http://metdna.zhulab.cn/index) to start your MetDNA journey!
