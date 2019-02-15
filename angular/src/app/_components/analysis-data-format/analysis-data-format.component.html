@@ -1,0 +1,57 @@
+<p>
+  MetDNA requires the import of the following files for metabolite identifications, including:
+</p>
+<ul>
+  <li>
+    A MS1 peak table (.csv format)
+  </li>
+  <li>
+    MS2 data files (.mgf or .msp format)
+  </li>
+  <li>
+    A table for sample information (.csv format)
+  </li>
+</ul>
+
+
+<div class="row">
+  <div class="col-8">
+    <p><b>Example of MS1 Peak Table</b></p>
+    <img style="width: 100%; max-height: 100%" [src]="ms1Url" *ngIf="ms1Url">
+  </div>
+  <div class="col-4">
+    <p><b>Example of Sample information</b></p>
+    <img style="width: 69%; max-height: 100%" [src]="sampleInfoUrl" *ngIf="sampleInfoUrl">
+  </div>
+</div>
+
+<br>
+<div class="alert alert-info">
+    <h6>Important Notes:</h6>
+    <ol>
+      <li>
+          "MS1 peak table" is a .csv file (<b>separated by commas</b>). The first column is the peak name ("name"). 
+          The second column is the mass-to-charge ratio ("mz"). The third column is the 
+          retention time ("rt"). The unit of retention time must be second (not minute). 
+          Other columns are peak abundances of MS1 peaks in each sample.
+          <p style="padding-top: 5px">
+            <b>IMPORTANT: the order and names of the first three columns (i.e., "name", "mz", and "rt") 
+              must be the same as the "Example of MS1 Peak Table".
+            </b>
+          </p>
+      </li>
+      <li>
+          "Sample information" is a .csv file (<b>separated by commas</b>) that contains the group information of all the samples. 
+          The first column is the sample name ("sample.name"). The second column is the group name ("group").
+          <p style="padding-top: 5px">
+            <b>IMPORTANT: the order and names of the first two columns (i.e., "sample.name" and "group") 
+             must be the same as "Example of Sample information".
+            </b>
+          </p>
+      </li>
+      <li>
+          "MS/MS data" are files in <b>.mgf</b> or <b>.msp</b> formats. Data conversion instruction can be found
+          in <a href="/help">help</a> page.
+      </li>
+    </ol>
+</div>

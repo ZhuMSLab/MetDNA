@@ -1,0 +1,72 @@
+.content {
+    padding: 5px 10px;
+    text-align: justify;
+}
+
+.legend {
+    border-bottom:thin solid grey;
+    margin: 20px 10px 10px 0;
+}
+
+.legend a, #index a {
+    color: #17a2b8;
+
+}
+
+#index a {
+    padding-left: 5px;
+}
+
+.legend-no-border {
+    /* border-bottom:thin solid grey; */
+    color: #17a2b8;
+    margin: 20px 10px 10px 10px;
+}
+
+#index {
+    font-size: 18px;
+}
+
+div h5 {
+    margin: 20px 1px 15px 1px;
+}
+
+div h5 {
+    margin: 15px 1px 10px 1px;
+}
+
+div.head-class7 {
+    margin: 10px 1px 8px 10px;
+}
+
+div.fig-div {
+    width: 60%;
+    height: auto;
+    margin: 1px auto;
+    /* border-style: solid; */
+    /* border-width: 1px; */
+    /* border-color: lightgray; */
+}
+
+img.fig-img {
+    /* position: absolute; */
+    max-width: 100%;  /*to auto resize the figure's width*/
+    margin: 10px auto;
+}
+
+pre, code, #ms-dial-parameter {
+    font-family: monospace, monospace;
+}
+
+pre {
+  overflow: auto;
+}
+
+pre > code, #email-example, #ms-dial-parameter {
+  width: 80%;
+  margin: 10px auto;
+  display: block;
+  padding: 1rem;
+  word-wrap: normal;
+  background-color: rgb(239, 248, 248);
+}

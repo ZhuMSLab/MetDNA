@@ -1,0 +1,350 @@
+<!-- // created by Xin Xiong<onlybelter@outlook.com>, https://github.com/OnlyBelter -->
+
+<div>
+  <!-- log in input component, reference the whole component by login -->
+  <app-log-in #login [hidden]="login.hideEmailForm" style="margin: 10px"></app-log-in>
+
+  <div *ngIf="login.hideEmailForm">
+
+    <div class="dropdown">
+        <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Hi, {{login.email}}
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <button type="button" class="btn btn-secondary btn-sm" (click)="login.logout()">Change Email</button>
+        </div>
+    </div>
+
+    <!-- total content in /analysis web pages -->
+    <div class="row" id="file-upload-and-parameter-setting">
+      <!-- left part -->
+      <div [class.col-sm-12]="window!==2"
+           [class.col-sm-8]="window===2">
+          <div class="card border-info mb-3">
+          <div class="card-header" id="card-header-analysis">
+            <ul class="nav nav-tabs card-header-tabs">
+              <li class="nav-item">
+                <a class="nav-link" [routerLink]="" 
+                  (click)="changeWindow(1);"
+                  [class.disabled]="disableWindow[1]"
+                  [class.active]="window==1">
+                  <b>Data Format</b>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" [routerLink]="" 
+                  (click)="changeWindow(2);"
+                  [class.disabled]="disableWindow[2]"
+                  [class.active]="window==2">
+                  <b>Upload Data Files</b>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" [routerLink]="" 
+                  (click)="changeWindow(3);"
+                  [class.disabled]="disableWindow[3]"
+                  [class.active]="window==3">
+                  <b>Data Profile</b>
+                </a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" [routerLink]="" 
+                    (click)="changeWindow(4);"
+                    [class.disabled]="disableWindow[4]"
+                    [class.active]="window==4">
+                    <b>Set Parameters</b>
+                  </a>
+              </li>
+            </ul>
+          </div>
+
+          <div id="data-format" class="card-body" *ngIf="window===1">
+            <app-analysis-data-format></app-analysis-data-format>
+            
+            <hr>
+            <div class="row button-row">
+              <div class="col-2">
+                <button type="button" class="btn btn-info"
+                  (click)="openNextWindow(2)">
+                  Next
+                </button>
+              </div>
+              <div class="col-10"></div>
+            </div>
+          </div>
+
+          <div id="upload-queue" class="card-body" *ngIf="window===2">
+
+            <!-- new table to show ngx-uploader progress -->
+            <div id="file-input-progress" *ngIf="fileUpload?.files?.length">
+              <div class="alert alert-danger" role="alert" *ngIf="fileUpload.sampleInfoStatus.length!==0">
+                File "Sample Information" has error: The first column name is not "sample.name".
+              </div>
+              <p style="text-align: left">
+                <b>Current Project</b>: 
+                {{ fileUpload.projectName }}
+                <span style="color: red" *ngIf="!fileUpload.projectName">(no project name)</span>
+              </p>
+              <p style="text-align: left"><b>Queue length</b>: {{ fileUpload.files?.length }}</p>
+              <p style="text-align: left">
+                <b>Total size</b>: 
+                <span [style.color]="fileUpload.totalSize/1024/1024 > fileUpload.maxSize ? 'red' : 'black'">{{ fileUpload.totalSize/1024/1024 | number:'.2' }} MB</span>
+              </p>
+              <div class="alert alert-danger" role="alert" *ngIf="fileUpload.totalSize/1024/1024 > fileUpload.maxSize">
+                Due to the limit of storage resource, the maximum total size of uploaded files is {{ fileUpload.maxSize }} Mb for each project.
+              </div>
+              <table class="table">
+                <thead>
+                <tr>
+                  <th style="width: 140px">Name</th>
+                  <th style="width: 60px">Type</th>
+                  <th style="width: 80px">Size</th>
+                  <th style="width: 100px">Progress</th>
+                  <th style="width: 100px">Status</th>
+                  <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let f of fileUpload?.files; let i = index;">
+                    <td style="width: 160px">
+                    <p class='file-name'>{{ f.name }}</p>
+                    </td>
+                    <td nowrap style="width: 100px">
+                      {{ fileUpload.fileTypeMapping[fileUpload.fileId2Type[f.id]] }} 
+                      <span *ngIf="fileUpload.fileId2Type[f.id]!=='sample_info'">({{ fileUpload.fileId2Pol[f.id] | uppercase }})</span>
+                    </td>
+                    <td nowrap style="width: 80px" *ngIf="f.size/1024/1024 >= 1">
+                      {{ f.size/1024/1024 | number:'.3' }} MB
+                    </td>
+                    <td nowrap style="width: 80px" *ngIf="f.size/1024/1024 < 1">
+                      {{ f.size/1024 | number:'.3' }} KB
+                    </td>
+                    <td class="text-center" style="width: 80px">
+                      <div class="progress" style="margin-bottom: 0;" *ngIf="!f.responseStatus">
+                        <div class="progress-bar progress-bar-striped bg-info"
+                          role="progressbar"
+                          [ngStyle]="{ 'width': f.progress.data.percentage + '%' }">
+                        </div>
+                      </div>
+                      <div class="progress" style="margin-bottom: 0;" *ngIf="(f.progress.data.percentage === 100) && (f.responseStatus === 201)">
+                        <div class="progress-bar bg-success"
+                          role="progressbar"
+                          [ngStyle]="{ 'width': f.progress.data.percentage + '%' }">
+                        </div>
+                      </div>
+                      <!-- {{f.responseStatus}} -->
+                      <div class="progress" style="margin-bottom: 0;" 
+                        *ngIf="f.responseStatus === 500">
+                        <div class="progress-bar bg-danger"
+                          role="progressbar"
+                          [ngStyle]="{ 'width': f.progress.data.percentage + '%' }">
+                          upload error
+                        </div>
+                      </div>
+                    </td>
+                    <td style="width: 110px">
+                      <span class="progress-data" *ngIf="f.progress.data.percentage < 100">
+                        {{ f.progress.data.speedHuman }} eta {{ f.progress.data.eta }}s
+                      </span>
+                      <span class="badge badge-success" 
+                             *ngIf="(f.progress.data.percentage === 100) && (f.responseStatus === 201) &&
+                                    (fileUpload.fileId2OutInfo[f.id]?.status === 'valid')">
+                        Valid
+                      </span>
+                      <span class="badge badge-danger" 
+                            *ngIf="(f.progress.data.percentage === 100) && (f.responseStatus === 201) &&
+                                   (fileUpload.fileId2OutInfo[f.id]?.status === 'error')">
+                        Error {{ fileUpload.fileId2OutInfo[f.id]?.error_code }}
+                      </span>
+                      <span class="badge badge-warning" 
+                            *ngIf="(f.progress.data.percentage === 100) && (f.responseStatus === 201) &&
+                                   (fileUpload.fileId2OutInfo[f.id]?.status === 'warning')">
+                        Warning {{ fileUpload.fileId2OutInfo[f.id]?.error_code }}
+                      </span>
+                      <!-- {{fileUpload.fileId2OutInfo[f.id]?.status}} -->
+                      <img src="/assets/Flickr.gif" 
+                        *ngIf="(f.progress.data.percentage === 100) &&
+                        (!fileUpload.fileId2OutInfo[f.id] || (fileUpload.fileId2OutInfo[f.id]?.status === 'checking'))">
+                    </td>
+                    <td nowrap>
+                      <button type="button"
+                        class="btn btn-outline-warning btn-sm"
+                        (click)="fileUpload.cancelUpload(f.id)"
+                        [disabled]="!(f.progress.status===1)">
+                        Cancel
+                      </button>
+                      <button type="button"
+                        class="btn btn-outline-danger btn-sm"
+                        (click)="fileUpload.removeFile(f.id)">
+                        Remove
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div *ngIf="!fileUpload.files?.length">
+              <div class="alert alert-info" role="alert">
+                Files were not uploaded.
+              </div>
+            </div>
+
+            <hr>
+            <div class="row button-row">
+              <div class="col-6">
+                <button type="button" class="btn btn-info"
+                  (click)="openNextWindow(1)">
+                  Previous
+                </button>
+                <button type="button" class="btn btn-info"
+                  (click)="openNextWindow(3)"
+                  [disabled]="fileUpload.fileStatus2Id['error'].length !== 0 || 
+                              fileUpload.files.length !== fileUpload.uploadedFileId.length || 
+                              fileUpload.fileType2Id['ms1_data']?.length===0 || 
+                              fileUpload.fileType2Id['ms2_data']?.length===0 || 
+                              fileUpload.fileType2Id['sample_info']?.length===0 ||
+                              fileUpload.sampleInfoStatus?.length!==0"
+                              data-toggle="tooltip" data-placement="right"
+                              title="You need to upload all needed files and no 'error' before 'Next'">
+                  Next
+                </button>
+              </div>
+              <div class="col-6"></div>
+            </div>
+            <div style="text-align: left; margin-top: 10px"
+              *ngIf="(fileUpload.uploadedFileId?.length === fileUpload.files?.length) && 
+              (fileUpload.fileStatus2Id?.valid.length !== fileUpload.uploadedFileId?.length) &&
+              (fileUpload.fileId2OutInfo[ms1FileId]?.status !== 'checking')">
+              <div class="alert alert-info" role="alert">
+                <p>You see this information, because the uploaded files have errors or warnings.  
+                  You can remove or modify these files and upload again.
+                </p>
+                <p *ngFor="let n of fileUpload.errorCodeKey">
+                  {{n}}. {{fileUpload.errorCode[n]}}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- mute this element when didn't finish file uploading -->
+          <div id="data-profile" class="card-body" *ngIf="window===3">
+            <div id="data-profile-pos" *ngIf="polarityMode==='pos' || polarityMode==='both'">
+              <div class="row">
+                <div [class.col-8]="peakProfileUrlPos">
+                    <img [src]="peakProfileUrlPos" *ngIf="peakProfileUrlPos">
+                </div>
+                <div class="col-4 profile-text">
+                  <!-- <div style="height: 180px" *ngIf="peakProfileUrlPos"></div> -->
+                  <ol style="text-align: left">
+                    <h5>
+                      <label style="color: #28a745">
+                          <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                      </label>
+                      Positive Mode
+                    </h5>
+                    <br>
+                    <li>There are {{ fileUpload.fileContentInfo?.peak_size.pos }} peaks 
+                        and {{ fileUpload.fileContentInfo.sample_size.pos }} samples in your data;</li>
+                    <li>The samples are classified into {{ fileUpload.fileContentInfo?.groups.length }} 
+                        groups: {{ fileUpload.fileContentInfo?.groups.toString() }};</li>
+                    <li>{{ ms2FileCount.pos }} MS/MS data files are provided.</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+
+            <hr id="polarity-mode-both-hr" *ngIf="polarityMode==='both'">
+
+            <div id="data-profile-neg" *ngIf="polarityMode==='neg' || polarityMode==='both'">
+              <div class="row">
+                <div [class.col-8]="peakProfileUrlNeg">
+                    <img [src]="peakProfileUrlNeg" *ngIf="peakProfileUrlNeg">
+                </div>
+                <div class="col-4 profile-text">
+                  <!-- <div style="height: 180px" *ngIf="peakProfileUrlNeg"></div> -->
+                  <ol style="text-align: left">
+                    <h5>
+                      <label style="color: #28a745">
+                          <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                      </label>
+                      Negative Mode
+                    </h5>
+                    <!-- <span class="badge badge-success"> Polarity</span> -->
+                    <br>
+                    <li>There are {{ fileUpload.fileContentInfo?.peak_size.neg }} peaks 
+                        and {{ fileUpload.fileContentInfo.sample_size.neg }} samples in your data;</li>
+                    <li>The samples are classified into {{ fileUpload.fileContentInfo?.groups.length }} 
+                        groups: {{ fileUpload.fileContentInfo?.groups.toString() }};</li>
+                    <li>{{ ms2FileCount.neg }} MS/MS data files are provided.</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+
+            <hr>
+            <div class="row button-row">
+              <div class="col-6">
+                <button type="button" class="btn btn-info"
+                  (click)="openNextWindow(2)">
+                  Previous
+                </button>
+                <button type="button" class="btn btn-info"
+                  (click)="openNextWindow(4)">
+                  Next
+                </button>
+              </div>
+              <div class="col-6"></div>
+            </div>
+          </div>
+
+          <!-- mute this element if didn't finish file uploading -->
+          <div id="parameter-setting" class="card-body" *ngIf="window===4">
+            <app-analysis-para-setting
+              [groups]="fileUpload.fileContentInfo?.groups"
+              [projectName]="fileUpload.projectName"
+              [polarityMode]="polarityMode"
+              #para
+              (finalSubmit)="finalSubmit($event)">
+            </app-analysis-para-setting>
+
+            <!-- final submit button -->
+            <!-- here is too wide when clicked submit, need to check again, 20180119-->
+            <hr>
+            <div class="row button-row">
+              <div class="col-sm-6">
+                <button type="button" 
+                  class="btn btn-info"
+                  (click)="openNextWindow(3)"
+                  [disabled]="para.showSubmitLoader">
+                  Previous
+                </button>
+                <button type="submit"
+                  (click)="para.onSubmit()"
+                  [disabled]="para.paraForm.invalid || para.paraForm.value.controlGroup===para.paraForm.value.caseGroup ||
+                              para.showSubmitLoader"
+                  class="btn btn-info"
+                  *ngIf="para.showSubmitLoader===false">
+                  Submit
+                </button>
+                <img style="max-width: 100%; height: 100%" src="/assets/Dual-Ring.gif"
+                  *ngIf="para.showSubmitLoader===true">
+              </div>
+              <div class="col-sm-6"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- left part -->
+      <div class="col-sm-4" [hidden]="window!==2">
+        <!-- a separate component for data files upload, reference the whole component by fileUpload-->
+        <app-file-upload #fileUpload 
+          (ms1UploadDone)="ms1UploadDone($event)">
+        </app-file-upload>
+      </div>
+    </div>
+
+
+  </div>
+</div>

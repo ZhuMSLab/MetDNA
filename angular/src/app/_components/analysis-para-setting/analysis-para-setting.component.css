@@ -1,0 +1,16 @@
+.form-group .form-control {
+    padding-bottom: 4px;
+    padding-top: 4px;
+}
+
+.ng-valid[required], .ng-valid.required  {
+    border-left: 5px solid #42A948; /* green */
+}
+
+.ng-invalid:not(form), .duplication  {
+    border-left: 5px solid #a94442; /* red */
+}
+
+.modal {
+    background: rgba(0,0,0,0.6);
+}

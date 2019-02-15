@@ -1,0 +1,13 @@
+/* You can add global styles to this file, and also import other style files */
+body {
+    background-color: #f0f0f0;
+}
+
+.inner-component {
+    width:80%;
+    margin:0 auto;
+    background-color: #ffffff;
+    border:0;
+}
+
+/* @import '~@angular/material/prebuilt-themes/deeppurple-amber.css'; */

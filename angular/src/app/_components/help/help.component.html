@@ -1,0 +1,418 @@
+<!-- // created by Xin Xiong<onlybelter@outlook.com>, https://github.com/OnlyBelter -->
+
+<div class="content">
+  <h4 class="legend-no-border">Contents</h4>
+  <ol id="index">
+    <li><a href="/help#prepare">Data Preparation(XCMS and MS-DIAL)</a></li>
+    <li><a href="/help#usage">The Use of MetDNA Webserver</a></li>
+    <li><a href="/help#download">Receive an Email and Download the Result</a></li>
+    <li><a href="/help#result">Interpretation of Analysis results from MetDNA</a></li>
+  </ol>
+
+  <div id="part1">
+    <h4 class="legend"><a name="prepare" href="help#prepare">1. Data Preparation(XCMS and MS-DIAL)</a></h4>
+    <p style="white-space: pre-line">MetDNA requires the import of the following files for metabolite identifications, including:
+      (1) A MS1 peak table (.csv format), 
+      (2) MS2 data files (.mgf or .msp format), and
+      (3) A table for sample information (.csv format). 
+    </p>
+
+    <h5>1.1 Prepare a MS1 peak table</h5>
+    <p>
+        The MS1 peak table is a list of metabolic peaks with annotated m/z, 
+        retention times (RTs) and peak abundances. 
+        The MS1 peak table is generated from the raw MS files using the common peak picking software 
+        such as XCMS, MZmine, and MS-DIAL. 
+    </p>
+    <h6>1.1.1 Prepare a MS1 peak table using XCMS</h6>
+    <p>
+        Here using XCMS, we provide a step-by-step instruction to generate the MS1 peak table from 
+        our mouse liver demo dataset. 
+        Please go to Demo Page to overview and download the demo data files.
+    </p>
+    <div class="head-class7">
+      <b>MS1 data conversion</b>
+    </div>
+    <p>
+        Convert raw MS data files (e.g., Sciex .wiff files) to mzXML format using 
+        <a href="http://proteowizard.sourceforge.net/">ProteoWizard</a> (version 3.0.6150). 
+        Please follow the conversion setting as following: 
+    </p>
+    <div class="fig-div">
+        <img class="fig-img" src="/assets/help/help-fig1-proteowizard.png">
+    </div>
+    <div class="head-class7">
+      <b>Peak picking using XCMS</b>
+    </div>
+    <p>
+        In each polarity, all of 24 MS files (mzXML format) were processed using R package "xcms" (version 1.46.0) 
+        for peak detection and alignment. The mzXML files are placed in three folders named as: "24W" , "78W", and "QC" 
+        according to their groups. 
+        Then the dataset is processed using the code shown below:
+    </p>
+    <pre>
+      <code contenteditable spellcheck="false">##set the folder containing mzXML format data as the work directory
+setwd("xxx")
+## peak detection
+f.in <- list.files(pattern = '\\.(mz[X]{{ '{' }}0, 1{{ '}' }}ML|cdf)', recursive = TRUE)
+xset <- xcms::xcmsSet(f.in, method = "centWave", ppm = 15, snthr = 10, peakwidth = c(5, 40), mzdiff = 0.01, nSlaves = 12)   
+##retention time correction
+pdf('rector-obiwarp.pdf')
+xsetc <-  xcms::retcor(xset, method = "obiwarp", plottype = "deviation", profStep = 0.1)
+dev.off()
+## peak grouping
+xset2 <- xcms::group(xsetc, bw = 5, mzwid = 0.015, minfrac = 0.5)
+##gap filling
+xset3 <- xcms::fillPeaks(xset2)
+##peak table outputting
+values <- xcms::groupval(xset3, "medret", value = "into")
+values.maxo <- xcms::groupval(xset3, "medret", value = 'maxo')
+values.maxint <- apply(values.maxo, 1, max)
+peak.table <- cbind(name = xcms::groupnames(xset3), groupmat = xcms::groups(xset3), maxint = values.maxint, values)
+rownames(peak.table) <- NULL
+write.table(peak.table, "Peak-table.csv", row.names = FALSE, sep=',')</code>
+    </pre>
+  </div>
+  <p>
+      As a result, a MS1 peak table named as “Peak-table” is generated
+      For the mouse liver demo data, a total of 21,607 peaks and 18,091 peaks were detected in positive and negative mode, respectively.       
+  </p>
+  <div class="head-class7">
+    <b>Modify the “Peak-table” from XCMS</b>
+  </div>
+  <p>
+    MetDNA requires a specific format for the MS1 peak table (.csv fomat). 
+  </p>
+  <ul>
+    <li>
+      The first column is the peak name ("name");
+    </li>
+    <li>
+      The second column is the mass-to-charge ratio ("mz");
+    </li>
+    <li>
+      The third column is the retention time ("rt");
+    </li>
+    <li>
+      The unit of retention time must be second (not minute);
+    </li>
+    <li>
+      Other columns are peak abundances of MS1 peaks in each sample.
+    </li>
+  </ul>
+  <b>IMPORTANT: </b>the order and names of the first three columns must be "name", "mz", and "rt".
+  <p style="white-space: pre-line">
+      With the “Peak-table” generated from XCMS, one can modify as following:
+      (1) For the first 12 columns, keep columns named as “name”, “mzmed”, “rtmed”, and delete others;
+      (2) Rename the first three columns as “name”, “mz” and “rt”;
+      (3) Name the peak table as “Peak_Table_POS” or “Peak_Table_NEG” according to the polarity.
+  </p>
+  <p>
+    The final generated MS1 peak table should look like:
+  </p>
+  <div class="fig-div" style="width: 40%">
+    <img class="fig-img" src="/assets/help/help-fig2-peaktable.png">
+  </div>
+  <!-- add in Jan 30, 2018 -->
+  <h6>1.1.2	Prepare a MS1 peak table using MS-DIAL</h6>
+  <div class="head-class7">
+    <b>MS1 data conversion</b>
+  </div>
+  <p>
+    Convert raw MS data files to abf format using <a href="http://www.reifycs.com/AbfConverter/index.html/">Analysis Base File Converter</a> (version 1.1.0.0)
+  </p>
+  <div class="fig-div" style="width: 40%">
+    <img class="fig-img" src="/assets/help/help-add-fig1-MS-DIAL.png">
+  </div>
+  <div class="head-class7">
+    <b>Process data with MS-DIAL</b>
+  </div>
+  <ul>
+    <li>
+      Generate a new project in <a href="http://prime.psc.riken.jp/Metabolomics_Software/MS-DIAL/">MS-DIAL</a> (version 2.56)
+    </li>
+    <li>
+      In each polarity, select the appropriate parameters according to the experimental design. 
+      Make sure to export the “Raw data matrix (Area)” and “Representative spectra” in .msp format. 
+      See “Prepare MS2 data files” for details.
+    </li>
+    <li>
+      In our published dataset No.3 (negative mode), we use the parameters as following:
+    </li>
+  </ul>
+  <div id="ms-dial-parameter">
+    <p style="white-space: pre-line"><b>Data collection parameters</b>
+      Retention time begin	0; Retention time end	23; Mass range begin	60; Mass range end	1200
+      
+      <b>Centroid parameters</b>
+      MS1 tolerance	0.01; MS2 tolerance	0.05; Peak detection-based	True
+      
+      <b>Peak detection parameters</b>
+      Smoothing method	LinearWeightedMovingAverage; Smoothing level	3; Minimum peak width	5; Minimum peak height	1000
+      
+      <b>Peak spotting parameters</b>
+      Mass slice width	0.1; Exclusion mass list (mass & tolerance)
+      
+      <b>Deconvolution parameters</b>
+      Peak consideration	Both; Sigma window value	0.5; Exclude after precursor	True
+      
+      <b>MSP file and MS/MS identification setting</b>
+      MSP file	
+      Retention time tolerance	0.5; Accurate mass tolerance (MS1)	0.01; Accurate mass tolerance (MS2)	0.05; Identification score cut off	80
+      
+      <b>Text file and post identification (retention time and accurate mass based) setting</b>
+      Text file
+      Retention time tolerance	0.1; Accurate mass tolerance	0.01; Identification score cut off	85
+      
+      <b>Advanced setting for identification</b>
+      Relative abundance cut off	0; Top candidate report	True
+      
+      <b>Adduct ion setting</b>
+      [M-H]-
+      
+      <b>Alignment parameters setting</b>
+      Reference file	F:\neg\liver24_1.abf; Retention time tolerance	0.1; MS1 tolerance	0.025; Retention time factor	0.5; MS1 factor	0.5; Peak count filter	25; QC at least filter	True
+      
+      <b>Tracking of isotope labels</b>
+      Tracking of isotopic labels	FALSE</p>
+  </div>
+  <div class="head-class7">
+    <b>Modify the MS1 peak table</b>
+  </div>
+  <p>
+    MetDNA requires a specific format for the MS1 peak table (.csv format).
+  </p>
+  <ul>
+    <li>
+      The first column is the peak name ("name").
+    </li>
+    <li>
+      The second column is the mass-to-charge ratio ("mz").
+    </li>
+    <li>
+      The third column is the retention time ("rt"). 
+    </li>
+    <li>
+      The unit of retention time must be second (not minute).
+    </li>
+    <li>
+      Other columns are peak abundances of MS1 peaks in each sample.
+    </li>
+  </ul>
+  <p>
+    <b>IMPORTANT:</b> the order and names of the first three columns must be "name", "mz", and "rt".
+  </p>
+  <p style="white-space: pre-line">With the “Raw data matrix (Area)” file generated from MS-DIAL, one can modify as following:
+    (1) Use EXCEL to open the “Area.txt” file, delete the first 3 rows, then delete 4-17 columns and only keep columns named as “Alignment ID”, “Average Rt (min)” and “Average Mz”.
+    (2) Exchange the orders of the second and third columns. Change the unit of retention time to second.
+    (3) Rename the first three columns as “name”, “mz” and “rt”.
+    (4) Name the peak table as “Peak_Table_POS” or “Peak_Table_NEG” according to the polarity.</p>
+  <p>
+    The final generated MS1 peak table should look like:
+  </p>
+  <div class="fig-div" style="width: 40%">
+    <img class="fig-img" src="/assets/help/help-fig2-peaktable.png">
+  </div>
+
+  <h5>1.2 Prepare a MS1 peak table</h5>
+  <p>
+    For users using XCMS, taken our mouse liver demo data as an example, convert 6 raw MS2 data files (.wiff format; i.e., QC60-300Da_NEG_1 etc.) in each ionization polarity to mgf format using <a href="http://proteowizard.sourceforge.net/">ProteoWizard</a> (version3.0.6150). 
+  </p>
+  <p>
+    Please follow the conversion setting as following:
+  </p>
+  <div class="fig-div" style="width: 50%">
+    <img class="fig-img" src="/assets/help/help-fig3-msconvert.png">
+  </div>
+  <p>
+    For users using MS-DIAL, 
+    please export the "Representative spectra" in .msp format. Follow the instructions below:
+  </p>
+  <div class="fig-div" style="width: 42%">
+    <img class="fig-img" src="/assets/help/help-add-fig2-MS-DIAL-msp.png">
+  </div>
+
+  <h5>1.3 Prepare a "sample information" file</h5>
+  <p>
+      The sample information file (.csv format) is designed to describe the sample group information. 
+      The first column is named as "sample.name", 
+      while the second one is named as “group”. The sample information file should look like:
+  </p>
+  <div class="fig-div" style="width: 20%">
+    <img class="fig-img" src="/assets/help/help-fig4-sample-info.png">
+  </div>
+  <p>
+      The "sample.name" column in sample information file must be 
+      the <b>EXACTLY</b> same as the sample names in the MS1 peak table.
+  </p>
+  <div class="fig-div" style="width: 40%">
+    <img class="fig-img" src="/assets/help/help-fig5-sample-name.png">
+  </div>
+
+  <h5>1.4 MetDNA demo data files</h5>
+  <p>The zip file for "MetDNA Demo Data" can be downloaded <a href="/demo#download" target="_blank">here</a>.</p>
+  <div class="fig-div" style="width: 45%">
+    <img class="fig-img" src="/assets/demo-data-structure.png">
+  </div>
+
+  <h5>1.5 Important notes for data preparation</h5>
+  <p style="white-space: pre-line">(1) In the MS1 peak table, make sure that no "-" or blank appears in the peak name or sample name. If there are some symbols that cannot be recognized by our program, the data processing may be failed.
+    (2) The "sample.name" column in sample information file must be the EXACTLY same as the sample names in the MS1 peak table.
+    (3) If you want to process both positive and negative datasets together, make sure that your sample names in the two peak tables are the same.
+    (4) The groups of samples should not be only one group.
+    (5) Please make sure that sample information (.csv format) and MS1 peak table (.csv format) are separated by <b>comma</b>. Because in some countries or regions (European and some French-speaking regions), the default separator is semicolon. You can open the sample information or MS1 peak table with <a href="https://notepad-plus-plus.org/">notepad</a> or other text editors to check whether they are separated by comma.</p>
+
+
+  <h4 class="legend"><a name="usage" href="/help#usage">2. The Use of MetDNA Webserver</a></h4>
+  <p>
+      Please click <a href="http://MetDNA.zhulab.cn/">http://MetDNA.zhulab.cn/</a> to visit MetDNA webserver. Currently, common web browsers such as Chrome, 
+      Edge and Firefox are supported. Internet Explorer (IE) didn't give sufficient test.
+  </p>
+
+  <h5>2.1 Enter your email</h5>
+  <p>
+      Click “Analysis” tab to start your data analysis. First, please enter your email so that you can receive the analysis results.
+  </p>
+  <div class="fig-div" style="width: 40%">
+    <img class="fig-img" src="/assets/help/help-fig7-login.png">
+  </div>
+
+  <h5>2.2 Check data format</h5>
+  <p style="white-space: pre-line">MetDNA requires the import of the following files, including:
+    (1) A MS1 peak table (.csv format), 
+    (2) MS2 data files (.mgf or .msp format), and
+    (3) A table for sample information (.csv format).</p>
+
+  <h5>2.3 Upload data files</h5>
+  <p>One polarity or two polarities(positive and negative) are supported in MetDNA.</p>
+  <div class="fig-div" style="width: 35%">
+    <img class="fig-img" src="/assets/help/help-fig8-upload.png">
+  </div>
+  <p style="white-space: pre-line">
+      <b>One polarity (positive or negative)</b>
+      (1)	Name your project
+      (2)	Choose the sample information file
+      (3)	Choose the polarity according to your data
+      (4)	Choose the MS1 peak table and MS/MS data
+      (5)	Click upload button to upload your data files
+      
+      <b>Two polarities (positive and negative)</b>
+      (1)	Name your project
+      (2)	Choose the sample information file
+      (3)	Choose the POSITIVE polarity
+      (4)	Choose the MS1 peak table and MS/MS data for positive polarity
+      (5)	Click upload button to upload your data files
+      (6)	Choose the NEGATIVE polarity 
+      (7)	Choose the MS1 peak table and MS/MS data for negative polarity
+      (8)	Click upload button to upload your data files
+  </p>
+
+  <h5>2.4 Set parameters for data processing</h5>
+  <p style="white-space: pre-line">(1) <b>Ionization Polarity:</b> Choose "Positive", "Negative", or "Both" according to the MS data.
+      (2)	<b>Liquid Chromatography:</b> Choose "HILIC" or "RP" according to the column condition.
+      (3)	<b>MS instrument:</b> Select the instrument for data acquisition.
+      (4)	<b>Collison Energy:</b> Select the CE value for MS2 data acquisition.
+      (5)	<b>Control group:</b> Select the control group.
+      (6)	<b>Case group:</b> The case group are compared with the control group to discover the dysregulated peaks.
+      (7)	<b>Univariate Statistics:</b> Choose "Student t-test" or "Wilcox test" to analyze the data.
+      (8) <b>Species:</b> Choose species depends on your experiment, now we support 16 different kinds of species, see below for details.
+      (9)	<b>Cutoff of P-value:</b> Define a maximum p-value to decide which peaks are significantly changed.
+      (10)	<b>P-value Adjustment:</b> Choose "yes" or "no" to decide whether to correct p-value with FDR.
+  </p>
+  <p style="margin: 30px"><b>Supported Species: </b>
+    Homo sapiens (human), Rattus norvegicus (rat), 
+    Mus musculus (mouse), Bos taurus (cow), 
+    Gallus gallus (chicken), Drosophila melanogaster (fruit fly), 
+    Danio rerio (zebrafish), Escherichia coli K-12 MG1655, 
+    Caenorhabditis elegans (nematode), Trypanosoma brucei, 
+    Pseudomonas putida KT2440, Plasmodum falciparum 3D7 (Malaria), 
+    Arabidopsis thaliana (thale cress), Schistosoma mansoni, 
+    Saccharomyces cerevisiae (yeast), Synechococcus elongatus
+  </p>
+
+  <div class="fig-div"  style="width: 42%">
+    <img class="fig-img" src="/assets/help/help-fig9-parameter-setting.png">
+  </div>
+
+  <h5>2.5 Submit</h5>
+  <p>After you click the “submit” button, your data will be submitted to MetDNA for processing. 
+    A confirmation message will pop out on your screen and a confirmation email 
+    from metdna@sioc.ac.cn will send to your email address.
+  </p>
+  <div class="fig-div" style="width: 45%">
+    <img class="fig-img" src="/assets/help/help-fig10-submit.png">
+  </div>
+
+
+  <h4 class="legend"><a name="download" href="/help#download">
+    3. Receive an Email and Download the Result</a>
+  </h4>
+  <p>After several hours, users will receive a notification email from metdna@sioc.ac.cn. 
+    You can download the result from the link included in the email.
+  </p>
+  <!-- <div class="fig-div" style="width: 70%">
+    <img class="fig-img" src="/assets/help/help-fig11-email.png">
+  </div> -->
+  <div id="email-example">
+    <p style="white-space: pre-line">Dear MetDNA user,
+    Thank you for using MetDNA!
+    Your project <b>demo</b> is finished and the analysis results can be downloaded within 7 days via the link:
+    http://metdna.zhulab.cn/media/xxx/xxx/results/results_both.tar.gz</p>
+    <p>The detailed description of the analysis results can be found <a href="/help">here</a>.</p>
+    <p>If you have any questions, please see the <a href="/faq">FAQs of MetDNA</a>, or send email to us (metdna@sioc.ac.cn).</p>
+    <p>--------------------------------------</p>
+    <div>
+      <p style="white-space: pre-line">Laboratory for Mass Spectrometry and Metabolomics (ZHU LAB)
+      Interdisciplinary Research Center on Biology and Chemistry (IRCBC)
+      Shanghai Institute of Organic Chemistry (SIOC)
+      Chinese Academy of Sciences (CAS)
+      26 Qiuyue Road, Pudong, Shanghai, China 201210
+      Website: <a href="http://www.zhulab.cn">www.zhulab.cn</a></p>
+    </div>
+  </div>
+  <p>Please make sure our email address metdna@sioc.ac.cn to be saved in your safe email list.</p>
+
+
+  <h4 class="legend"><a name="result" href="/help#result">4. Interpretation of Analysis results from MetDNA</a></h4>
+  <p>The analysis result contains three folders, named as "BOTH", "POS", and "NEG".</p>
+  <div class="fig-div" style="width: 70%">
+    <img class="fig-img" src="/assets/help/help-fig12-result-folder.png">
+  </div>
+  
+  <h5>4.1 Information for "POS\MRN_annotation_result\MRN.annotation.result.csv"</h5>
+  <p>This is a csv table that provides the identification results for peaks in positive mode.</p>
+
+  <h5>4.2 Information for "NEG\MRN_annotation_result\MRN.annotation.result.csv"</h5>
+  <p>This is a csv table that provides the identification results for peaks in negative mode.</p>
+
+  <h5>4.3 Information for “BOTH\Analysis_report” folder</h5>
+  <p>This is a folder which contains a summary report of MetDNA (in HTML format) and the related figures in the report (in pdf format).</p>
+  <div class="fig-div" style="width: 40%">
+    <img class="fig-img" src="/assets/help/help-fig13-result-analysis-report.png">
+  </div>
+
+  <h5>4.4 Information for "BOTH\Pathway_enrichment_analysis_result" folder</h5>
+  <p>This is a folder which contains the pathway enrichment analysis results.</p>
+  <div class="fig-div" style="width: 40%">
+    <img class="fig-img" src="/assets/help/help-fig14-result-pathway.png">
+  </div>
+  <p style="white-space: pre-line">
+      (1)	<b>Boxplot folder:</b> Boxplots for the quantitative analysis of each pathway.
+      (2)	<b>Heatmap folder:</b> Heatmaps for metabolites in each pathway.
+      (3)	<b>Pathway.enrichment.analysis:</b> Detailed information of pathway enrichment analysis result.
+      (4)	<b>Pathway.enrichment.MSEA:</b> A figure to show the pathway enrichment result
+      (5)	<b>pathway.enrichment.overview:</b> A figure to show the pathway enrichment result
+      (6)	<b>Pathway.heatmap:</b> Heatmap to demonstrate the quantitative expressions of pathways
+      (7)	<b>Quantitative.pathway.metabolite.result:</b> A table that contains the quantitative information for significantly changed metabolites; values are pareto scaled.
+      (8)	<b>Quantitative.pathway.result:</b> A table that contains the quantitative information of pathways in each sample. 
+      (9)	<b>Volcano.plot:</b> A volcano plot that describes significantly changed metabolites.
+  </p>
+
+  <h5>4.5 Information for "BOTH\folderMetDNA.parameters.csv"</h5>
+  <p>A table with the parameters used in MetDNA software.</p>
+
+  <h5>4.6 Information for "BOTH\run.log.txt"</h5>
+  <p>The running log of MetDNA Webserver.</p>
+
+</div>
+<!-- // created by Xin Xiong<onlybelter@outlook.com>, https://github.com/OnlyBelter -->

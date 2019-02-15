@@ -1,0 +1,25 @@
+/* created by Xin Xiong<onlybelter@outlook.com>, https://github.com/OnlyBelter */
+
+.ng-valid[required], .ng-valid.required  {
+    border-left: 5px solid #42A948; /* green */
+}
+
+.ng-invalid:not(form), .duplication  {
+    border-left: 5px solid #a94442; /* red */
+}
+
+div > b {
+    color: #17a2b8;
+}
+
+#file-input-form .card {
+    margin-bottom: 18px;
+}
+
+#file-input-form .card-body {
+    padding: 10px;
+}
+
+.custom-card-title {
+    margin-top: 30px;
+}

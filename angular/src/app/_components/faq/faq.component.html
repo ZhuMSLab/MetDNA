@@ -1,0 +1,108 @@
+<br>
+<ol>
+  <div class="content">
+    <b>
+      <li>
+        What types of metabolomics data are supported by MetDNA?
+      </li>
+    </b>
+    <p><b>Ans.</b> MetDNA only supports LC-MS based untargeted metabolomics data acquired from high resolution Time-of-Flight (TOF) and Orbitrap instruments. MS/MS data are required for the metabolite identification.MS/MS data from different data acquisition methods such as data dependent acquisition (DDA), data independent acquisition (DIA) or targeted MS2 acquisition are all supported by MetDNA.
+      MetDNA do NOT support targeted metabolomics data, such as MRM and PRM. 
+      MetDNA do NOT support metabolomics data acquired from GC-MS and NMR.
+    </p>
+  </div>
+  <div class="content">
+    <b>
+      <li>
+        When I upload the data, why does “upload error” appear?
+      </li>
+    </b>
+    <p><b>Ans.</b> Please make sure that first you choose and upload the positive mode data; 
+      after the uploading completes, then choose and upload negative mode data. 
+      You cannot simultaneously upload both positive and negative modes.
+    </p>
+  </div>
+  <div class="content">
+    <b>
+      <li>
+        I uploaded both positive and negative mode data, 
+        but I cannot choose “Both” in the setting of “Ionization Polarity” in Set Parameters page?
+      </li>
+    </b>
+    <p><b>Ans.</b> Please make sure that two modes of your data are uploaded in the same project. 
+      The project name for both positive and negative modes must be the same.
+    </p>
+  </div>
+  <div class="content">
+    <b>
+      <li>
+        Can MetDNA support to process DIA based metabolomics data?
+      </li>
+    </b>
+    <p><b>Ans.</b> Yes! You can use MS-DIAL to generate the MS1 peak table and MS2 data files in .msp format. 
+      MetDNA supports the import of MS2 data files in msp format.
+    </p>
+  </div>
+  <div class="content">
+    <b>
+      <li>
+        Does MetDNA support targeted metabolomics data?
+      </li>
+    </b>
+    <p><b>Ans.</b> No!
+    </p>
+  </div>
+  <div class="content">
+    <b>
+      <li>
+        Does MetDNA support GC-MS data analysis?
+      </li>
+    </b>
+    <p><b>Ans.</b> No!
+    </p>
+  </div>
+  <div class="content">
+    <b>
+      <li>
+        Does MetDNA support NMR data analysis?
+      </li>
+    </b>
+    <p><b>Ans.</b> No!
+    </p>
+  </div>
+  <div class="content">
+    <b>
+      <li>
+        Which browser can I use?
+      </li>
+    </b>
+    <p><b>Ans.</b> Currently, common web browsers such as Chrome, 
+      Edge and Firefox are supported. Internet Explorer (IE) didn't give sufficient test. 
+      We highly recommend Chrome.
+    </p>
+  </div>
+  <div class="content">
+    <b>
+      <li>
+        How to open the result file?
+      </li>
+    </b>
+    <p><b>Ans.</b> The result of MetDNA analysis is a compressed archive format file, '.tar.gz', 
+      you can use <a href="http://www.7-zip.org/" target="_blank">7-Zip</a> to unzip this compressed file.
+    </p>
+  </div>
+  <div class="content">
+    <b>
+      <li>
+        When I upload the data, why does "File 'Sample Information' has error: 
+        The first column name is not 'sample.name'." appear? However, 
+        I am sure that the first column name of sample information is "sample.name".
+      </li>
+    </b>
+    <p><b>Ans.</b> In some countries and regions (European and some French-speaking regions), 
+      the default separator is semicolon for .csv format files.
+       So please check your sample information and MS1 peak table again to make sure they are separated by comma. 
+       You can open the sample information or MS1 peak table with <a href="https://notepad-plus-plus.org/">notepad</a> or other text editors to check whether they are separated by comma.
+    </p>
+  </div>
+</ol>

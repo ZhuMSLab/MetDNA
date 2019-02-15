@@ -1,0 +1,16 @@
+
+.legend, .legend a {
+    /* border-bottom:thin solid grey; */
+    color: #17a2b8;
+    padding: 20px 10px 10px 10px;
+}
+
+.content {
+    padding: 5px 10px;
+    text-align: justify;
+}
+
+.fig {
+    max-width: 100%;  /*to auto resize the figure's width*/
+    margin: 20px auto;
+}

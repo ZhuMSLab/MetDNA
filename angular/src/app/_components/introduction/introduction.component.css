@@ -1,0 +1,26 @@
+#introduction {
+    padding: 10px;
+    text-align: justify;
+}
+
+div h3 {
+    text-align: center;
+    margin: 0 auto;
+    padding: 10px 0;
+}
+
+.fig {
+    max-width: 100%;  /*to auto resize the figure's width*/
+    margin: 20px auto;
+}
+
+.legend {
+    border-bottom:thin solid grey;
+    color: #17a2b8;
+    margin: 20px 10px 10px 10px;
+}
+
+.content {
+    padding: 5px 10px;
+    text-align: justify;
+}

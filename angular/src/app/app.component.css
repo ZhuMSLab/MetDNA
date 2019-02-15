@@ -1,0 +1,56 @@
+#login {
+    padding-right: 20px;
+}
+
+#footer {
+  padding: 10px;
+}
+
+a {
+  padding: 4px;
+}
+
+a > h5 {
+  /* padding-right: 10px; */
+  margin: 10px;
+  margin-left: 0;
+  margin-right: 20px;
+  /* margin-bottom: 0px; */
+  /* font-size: 22px; */
+}
+
+/* #head img {
+  
+}  */
+
+img#metdna-logo {
+  margin: 10px;
+  padding-left: 5px; 
+}
+
+img#zhulab-logo {
+  margin-top: 40px;
+}
+
+#navbarDiv {
+  padding-left: 10%;
+  /* height: 46px; */
+}
+
+footer {
+  width: 60%;
+  margin: 20px auto;
+/*    text-align: center;*/
+}
+
+.footer_p {
+  font-size: 14px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+#rc {
+  color: red;
+  margin-top: 40px;
+  margin-left: 60%;
+}

@@ -1,0 +1,58 @@
+<!-- // created by Xin Xiong<onlybelter@outlook.com>, https://github.com/OnlyBelter -->
+
+<!--The content below is only a placeholder and can be replaced.-->
+<div id="head">
+  <div class="form-group row">
+    <div class="col-sm-1">
+      <h1 id="rc" *ngIf="frontPort==='8024'">
+        v1, RC6
+      </h1>
+    </div>
+    <div class="col-sm-6" style="max-height: 200px">
+      <a href="/index">
+        <img id="metdna-logo" style="max-width: 100%; height: 90%"  src="/assets/MetDNA-logo.png">
+      </a>
+    </div>
+    <!-- <div class="col-sm-1"></div> -->
+    <div class="col-sm-3" style="max-height: 200px">
+        <a href="http://www.zhulab.cn">
+          <img id="zhulab-logo"  style="max-width: 100%; height: 60%"  src="/assets/zhulab-mini.png">
+        </a>
+    </div>
+
+  </div>
+
+  <nav class="navbar navbar-toggleable-md navbar-expand-lg navbar-dark bg-info navbar-inverse" style="padding: 1px; width: 100%">
+    <!-- <a class="navbar-brand" routerLink='/index' style="padding-right: 5px">
+    </a> -->
+    <button id="nav-btn" class="navbar-toggler navbar-toggler-left" type="button" data-toggle="collapse" data-target="#navbarDiv" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <!-- <div class="container"> -->
+        <div class="collapse navbar-collapse" id="navbarDiv">
+          <div class="navbar-nav mr-auto">
+            <a class="nav-link navLink" routerLink="/index" routerLinkActive="active"><h5>Introduction</h5></a>
+            <a class="nav-link navLink" routerLink="/analysis" routerLinkActive="active"><h5>Analysis</h5></a>
+            <a class="nav-link navLink" routerLink="/help" routerLinkActive="active"><h5>Help</h5></a>
+            <a class="nav-link navLink" routerLink="/faq" routerLinkActive="active"><h5>FAQs</h5></a>
+            <a class="nav-link navLink" routerLink="/demo" routerLinkActive="active"><h5>Demo</h5></a>
+            <a class="nav-link navLink" href="http://www.zhulab.cn" routerLinkActive="active" target="_blank"><h5>ZhuLab</h5></a>
+          </div>
+        </div>
+    <!-- </div> -->
+  </nav>
+</div>
+
+  <div class="inner-component">
+    <router-outlet id="router-outlet"></router-outlet>
+  </div>
+  <hr>
+  <div>
+    <footer id="footer">
+      <p class="footer_p">Questions: shenxt AT sioc.ac.cn, jiangzhu AT sioc.ac.cn</p>
+      <p class="footer_p">&#169;<a href="http://www.metabolomics-shanghai.org/index.php" target="_blank">Zhu Lab</a>, Interdisciplinary Research Center on Biology and Chemistry (IRCBC), 
+        Chinese Academy of Sciences. All Rights Reserved.</p>
+    </footer>
+  </div>
+
+<!-- // created by Xin Xiong<onlybelter@outlook.com>, https://github.com/OnlyBelter -->

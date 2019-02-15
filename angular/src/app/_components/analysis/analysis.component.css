@@ -1,0 +1,63 @@
+#file-upload-and-parameter-setting, #file-input-progress, .notice {
+    padding: 10px;
+}
+
+#file-input-progress-total .submit-btn {
+    padding: 5px;
+}
+
+/* div b {
+    color: gray;
+} */
+
+.nav-link.active {
+    color: #17a2b8;
+}
+
+li a {
+    color: #17a2b8;
+}
+
+tbody td {
+    padding: 12px 5px;
+}
+
+tbody > tr > td > div.progress {
+    margin: 10px 0;
+}
+
+tbody > tr > td > span {
+    margin-top: 10px;
+    margin-left: 5px;
+}
+
+tbody td .file-name {
+    /* https://developer.mozilla.org/en-US/docs/Web/CSS/overflow-wrap */
+    word-break: break-all;
+    /* word-wrap: break-word; */
+    /* background-color: blue; */
+    /* overflow-wrap: break-word; */
+}
+
+#polarity-mode-both-hr {
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 1px solid #ccc;
+    margin: 1em 0;
+    padding: 0; 
+    border-color: green;
+}
+
+.button-row {
+    height: 40px;
+}
+
+#data-profile img {
+    width: 100%;
+
+}
+
+#data-profile .profile-text {
+    margin: auto;
+}

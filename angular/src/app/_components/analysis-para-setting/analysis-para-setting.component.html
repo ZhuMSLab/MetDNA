@@ -1,0 +1,177 @@
+
+
+<form [formGroup]="paraForm">
+
+  <div class="form-group row">
+    <div class="col-sm-2"></div>
+    <label class="col-sm-2 col-form-label" style="text-align: left">Ionization Polarity</label>
+    <div class="col-sm-3">
+      <select class="form-control" formControlName="polarity">
+        <option *ngFor="let polarity of polarityValue" [value]="polarity">{{polarity}}</option>
+      </select>
+      <!-- <input class="form-control" formControlName="polarity"> -->
+    </div>
+    <small class="text-muted col-sm-5" style="text-align: left">
+        The acquisition mode [Positive/Negative]
+    </small>
+  </div>
+
+  <div class="form-group row">
+      <div class="col-sm-2"></div>
+    <label class="col-sm-2 col-form-label" style="text-align: left; padding-right: 2px">Liquid Chromatography</label>
+    <div class="col-sm-3">
+        <!-- <input class="form-control" formControlName="lcType"> -->
+      <select class="form-control" formControlName="lcType">
+        <option *ngFor="let lc of lcValue" [value]="lc">{{lc}}</option>
+      </select>
+    </div>
+    <small class="text-muted col-sm-5" style="text-align: left">
+        Liquid Chromatography (LC) type [HILIC/RP]
+    </small>
+  </div>
+
+  <div class="form-group row">
+      <div class="col-sm-2"></div>
+    <label class="col-sm-2 col-form-label" style="text-align: left">MS Instrument</label>
+    <div class="col-sm-3">
+        <!-- <input class="form-control" formControlName="lcType"> -->
+      <select class="form-control" formControlName="instrument">
+        <option *ngFor="let instt of insttValue" [value]="instt">{{instt}}</option>
+      </select>
+    </div>
+    <small class="text-muted col-sm-5" style="text-align: left">
+        Mass Spectrometer Instrument type
+    </small>
+  </div>
+
+  <div class="form-group row">
+      <div class="col-sm-2"></div>
+    <label class="col-sm-2 col-form-label" style="text-align: left">Collision Energy</label>
+    <div class="col-sm-3">
+        <!-- <input class="form-control" formControlName="ce"> -->
+      <select class="form-control" formControlName="ce">
+        <option *ngFor="let ce of ceValue" [value]="ce">{{ce}}</option>
+      </select>
+    </div>
+    <small class="text-muted col-sm-5" style="text-align: left">
+        The Collision Energy (CE) of MS/MS data acquisition
+    </small>
+  </div>
+
+  <div class="form-group row">
+      <div class="col-sm-2"></div>
+    <label class="col-sm-2 col-form-label" style="text-align: left">Control Group</label>
+    <div class="col-sm-3">
+        <!-- <input class="form-control" formControlName="controlGroup"> -->
+      <select class="form-control" formControlName="controlGroup">
+        <option *ngFor="let group of groups" [value]="group">{{group}}</option>
+      </select>
+    </div>
+    <small class="text-muted col-sm-5" style="text-align: left">
+        The name of control group
+    </small>
+  </div>
+
+  <div class="form-group row">
+      <div class="col-sm-2"></div>
+    <label class="col-sm-2 col-form-label" style="text-align: left">Case Group</label>
+    <div class="col-sm-3">
+      <!-- <input class="form-control" formControlName="caseGroup"> -->
+      <select class="form-control" formControlName="caseGroup">
+        <option *ngFor="let group of groups" [value]="group">{{group}}</option>
+      </select>
+    </div>
+    <small class="text-muted col-sm-5" style="text-align: left">
+        The name of case group
+    </small>
+  </div>
+
+  <div class="form-group row">
+      <div class="col-sm-2"></div>
+    <label class="col-sm-2 col-form-label" style="text-align: left">Univariate Statistics</label>
+    <div class="col-sm-3">
+      <!-- <input class="form-control" formControlName="statMethod"> -->
+      <select class="form-control" formControlName="statMethod">
+        <option *ngFor="let method of statMethodValue" [value]="method">{{method}}</option>
+      </select>
+    </div>
+    <small class="text-muted col-sm-5" style="text-align: left">
+      Statistic method [Student t-test/Wilcox test]
+    </small>
+  </div>
+
+  <div class="form-group row">
+      <div class="col-sm-2"></div>
+    <label class="col-sm-2 col-form-label" style="text-align: left">Species</label>
+    <div class="col-sm-3">
+      <!-- <input class="form-control" formControlName="species"> -->
+      <select class="form-control" formControlName="species">
+        <option *ngFor="let species of speciesValue" [value]="species">{{species}}</option>
+      </select>
+    </div>
+    <small class="text-muted col-sm-5" style="text-align: left">
+        The species of your project data
+    </small>
+  </div>
+
+  <div class="form-group row">
+      <div class="col-sm-2"></div>
+    <label class="col-sm-2 col-form-label" style="text-align: left">Cutoff of P-value</label>
+    <div class="col-sm-3">
+        <input class="form-control" formControlName="pCutoff">
+    </div>
+    <small class="text-muted col-sm-5" style="text-align: left">
+        Usually less than 0.05
+    </small>
+  </div>
+
+  <div class="form-group row">
+      <div class="col-sm-2"></div>
+    <label class="col-sm-2 col-form-label" style="text-align: left">P-value Adjustment</label>
+    <div class="col-sm-3">
+      <!-- <input class="form-control" formControlName="adjustP"> -->
+      <select class="form-control" formControlName="adjustP">
+        <option *ngFor="let adjustP of adjustPValue" [value]="adjustP">{{adjustP}}</option>
+      </select>
+    </div>
+    <small class="text-muted col-sm-5" style="text-align: left">
+      Adjust p values with FDR [Yes/No]
+    </small>
+  </div>
+</form>
+<!-- <hr> -->
+<!-- <p>paraForm values: {{ paraForm.value | json }}</p> -->
+<div class="alert alert-danger" role="alert" *ngIf="showError" style="text-align: left">
+  <p>Duplicate submission or failed submission!</p>
+  <p>One project can only be submitted once! If this is your first submission, you can try again later or go to step 2 - 'Upload Data Files', click 'Reset' button of 'File Uploader' to start a new project.</p>
+  <p>If you always get this information, please send us an email to report this issue.</p>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
+[ngClass]="{'show': visibleAnimate}" [ngStyle]="{'display': visible ? 'block' : 'none', 'opacity': visibleAnimate ? 1 : 0}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="ModalLabel">
+          <label style="color: #28a745">
+            <i class="fa fa-check-circle" aria-hidden="true"></i>
+          </label>
+          Congratulations!
+        </h4>
+        <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button> -->
+      </div>
+      <div class="modal-body" style="text-align: left">
+          <p>Your project <b>{{projectName}}</b> has been submitted successfully!  
+            We will send you an email after this analysis is finished.
+          </p>
+          <p>Usually it will take several hours.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="hide()">Close</button>
+        <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+      </div>
+    </div>
+  </div>
+</div>

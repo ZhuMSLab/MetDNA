@@ -1,0 +1,34 @@
+<!-- // created by Xin Xiong<onlybelter@outlook.com>, https://github.com/OnlyBelter -->
+
+<!-- email & project name input form -->
+<div class="card border-info mb-3">
+  <div class="card-header">Email address</div>
+    <form style="margin: 10px">
+      <div class="form-group">
+        <input type="email" class="form-control" aria-describedby="emailHelp" 
+        placeholder="Enter email" [formControl]="emailFormControl">
+        <div *ngIf="emailFormControl.hasError('pattern')" class="alert alert-danger" role="alert">
+            Invalid email address!
+        </div>
+        <div *ngIf="welcomeWords" class="alert alert-info" role="alert">
+          {{ welcomeWords }}
+        </div>
+        <div *ngIf="logInError" class="alert alert-danger" role="alert">
+            {{ logInError }}
+        </div>
+        <div *ngIf="logOutInfo && emailFormControl.untouched" class="alert alert-info" role="alert">
+            {{ logOutInfo }}
+        </div>
+        <div *ngIf="emailFormControl.hasError('required') && emailFormControl.touched" class="alert alert-info" role="alert">
+          Email is <strong>required</strong>
+        </div>
+        <small id="emailHelp" class="form-text text-muted">
+          <p>Please enter a VALID email address!</p> 
+          After the data analysis is finished, you will receive an email with the 
+          link to download the analysis reports. 
+          We'll never share your email with anyone else.</small>
+      </div>
+      <button type="submit" class="btn btn-info" 
+       [disabled]="!emailFormControl.valid" (click)="onClick(); emailFormControl.reset()">Submit</button>
+    </form>
+  </div>
